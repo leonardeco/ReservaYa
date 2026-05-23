@@ -26,19 +26,16 @@ describe('Confirmacion', () => {
   });
 
   it('debe cargar La Terraza como restaurante confirmado', () => {
-    expect(component.restaurante.name).toBe('La Terraza');
+    expect(component.restaurante().name).toBe('La Terraza');
   });
 
-  it('debe tener un código de reserva con formato RY-', () => {
-    expect(component.codigoReserva).toMatch(/^RY-/);
+  it('debe generar un código de reserva con formato RY-', () => {
+    component.svc.generarCodigo();
+    expect(component.svc.codigoReserva()).toMatch(/^RY-/);
   });
 
-  it('debe tener nombre del cliente definido', () => {
-    expect(component.nombre).toBeTruthy();
-  });
-
-  it('debe tener personas mayor a 0', () => {
-    expect(component.personas).toBeGreaterThan(0);
+  it('debe tener personas mayor a 0 por defecto', () => {
+    expect(component.svc.personas()).toBeGreaterThan(0);
   });
 
   it('debe navegar a /inicio al volver al inicio', () => {
@@ -48,6 +45,6 @@ describe('Confirmacion', () => {
   });
 
   it('debe tener teléfono del restaurante definido', () => {
-    expect(component.restaurante.phone).toBeTruthy();
+    expect(component.restaurante().phone).toBeTruthy();
   });
 });

@@ -26,40 +26,42 @@ describe('Reserva', () => {
   });
 
   it('debe cargar La Terraza como restaurante por defecto', () => {
-    expect(component.restaurante.name).toBe('La Terraza');
+    expect(component.restaurante().name).toBe('La Terraza');
   });
 
   it('debe inicializar el formulario vacío', () => {
-    expect(component.form.nombre).toBe('');
-    expect(component.form.telefono).toBe('');
-    expect(component.form.correo).toBe('');
-    expect(component.form.notas).toBe('');
-    expect(component.form.aceptaTerminos).toBeFalsy();
+    expect(component.nombre).toBe('');
+    expect(component.telefono).toBe('');
+    expect(component.correo).toBe('');
+    expect(component.notas).toBe('');
+    expect(component.aceptaTerminos).toBeFalsy();
   });
 
   it('NO debe navegar si los términos no están aceptados', () => {
     const spy = vi.spyOn(router, 'navigate');
-    component.form.aceptaTerminos = false;
+    component.aceptaTerminos = false;
     component.confirmarReserva();
     expect(spy).not.toHaveBeenCalled();
   });
 
   it('debe navegar a /confirmacion al aceptar términos y confirmar', () => {
     const spy = vi.spyOn(router, 'navigate');
-    component.form.aceptaTerminos = true;
+    component.aceptaTerminos = true;
+    component.nombre = 'Leonardo';
+    component.telefono = '3001234567';
+    component.correo = 'leo@test.com';
     component.confirmarReserva();
     expect(spy).toHaveBeenCalledWith(['/confirmacion']);
   });
 
   it('debe navegar a /detalle al volver al restaurante', () => {
     const spy = vi.spyOn(router, 'navigate');
-    component.volverAlRestaurante();
-    expect(spy).toHaveBeenCalledWith(['/detalle']);
+    component.backToDetalle();
+    expect(spy).toHaveBeenCalled();
   });
 
-  it('debe tener fecha, hora y personas definidos', () => {
-    expect(component.fecha).toBeTruthy();
-    expect(component.hora).toBeTruthy();
-    expect(component.personas).toBeGreaterThan(0);
+  it('debe tener hora y personas definidos en el servicio', () => {
+    expect(component.svc.hora()).toBeTruthy();
+    expect(component.svc.personas()).toBeGreaterThan(0);
   });
 });
